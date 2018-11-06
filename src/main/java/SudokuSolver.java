@@ -8,31 +8,25 @@ public class SudokuSolver {
     private SudokuParser sudokuParser;
     private ArrayList<ArrayList<Integer>> verticalVariants;
     private ArrayList<ArrayList<Integer>> horizontalVariants;
+    private int[][] sudokuMatrix;
 
     public SudokuSolver (WebDriver driver) {
         this.driver = driver;
         this.sudokuParser = new SudokuParser(driver);
         this.verticalVariants = VerticalVariants();
         this.horizontalVariants = HorizontalVariants();
+
     }
 
 
-    private int[][] getMatrix () {
-        int[][] sudokuMatrix;
+    private void getMatrix () {
         sudokuMatrix = sudokuParser.ParseSudoku(driver);
-        return sudokuMatrix;
     }
-
-
-
 
     void SolveSudoku() {
-        System.out.println(verticalVariants.get(0));
-        System.out.println(horizontalVariants.get(0));
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++){
-                if (getMatrix()[i][j] == 0) {
-
+                if (sudokuMatrix[i][j] == 0) {
                 }
             }
 
@@ -50,6 +44,7 @@ public class SudokuSolver {
 
     private ArrayList<ArrayList<Integer>> VerticalVariants() {
 
+        getMatrix();
         ArrayList<ArrayList<Integer>> verticalVariants = new ArrayList<ArrayList<Integer>>();
 
         for(int k = 0; k < 9; k++) {
@@ -57,14 +52,13 @@ public class SudokuSolver {
             ArrayList<Integer> changedCheckList = CreateCheckList();
             for (int i = 0; i < 9; i++) {
                 for (int j = 0; j < 9; j++){
-                    if (getMatrix()[k][i] == checklist.get(j)) {
+                    if (sudokuMatrix[k][i] == checklist.get(j)) {
                         changedCheckList.remove(checklist.get(j));
                     }
                 }
             }
             verticalVariants.add(changedCheckList);
         }
-        System.out.println(verticalVariants);
         return verticalVariants;
     }
 
@@ -77,14 +71,13 @@ public class SudokuSolver {
             ArrayList<Integer> changedCheckList = CreateCheckList();
             for (int i = 0; i < 9; i++) {
                 for (int j = 0; j < 9; j++){
-                    if (getMatrix()[i][k] == checklist.get(j)) {
+                    if (sudokuMatrix[i][k] == checklist.get(j)) {
                         changedCheckList.remove(checklist.get(j));
                     }
                 }
             }
             horizontalVariants.add(changedCheckList);
         }
-        System.out.println(horizontalVariants);
         return horizontalVariants;
     }
 //
