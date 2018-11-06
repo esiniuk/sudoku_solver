@@ -1,32 +1,38 @@
 import org.openqa.selenium.WebDriver;
+import java.util.ArrayList;
 
-import java.util.List;
 
 public class SudokuSolver {
 
-    WebDriver driver;
+    private WebDriver driver;
+    private SudokuParser sudokuParser;
+    private ArrayList<ArrayList<Integer>> verticalVariants;
+    private ArrayList<ArrayList<Integer>> horizontalVariants;
 
-    public SudokuSolver(WebDriver driver) {
+    public SudokuSolver (WebDriver driver) {
         this.driver = driver;
+        this.sudokuParser = new SudokuParser(driver);
+        this.verticalVariants = VerticalVariants();
+        this.horizontalVariants = HorizontalVariants();
     }
 
-    private SudokuActions sudokuActions = new SudokuActions(driver);
-    private SudokuParser sudokuParser = new SudokuParser(driver);
 
-    public int[][] getMatrix () {
+    private int[][] getMatrix () {
         int[][] sudokuMatrix;
         sudokuMatrix = sudokuParser.ParseSudoku(driver);
         return sudokuMatrix;
     }
 
 
-    public void SolveSudoku() {
 
-        getMatrix();
+
+    void SolveSudoku() {
+        System.out.println(verticalVariants.get(0));
+        System.out.println(horizontalVariants.get(0));
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++){
-                if (getMatrix()[i][0] == 0) {
-                // проверка на
+                if (getMatrix()[i][j] == 0) {
+
                 }
             }
 
@@ -34,24 +40,55 @@ public class SudokuSolver {
 
     }
 
-    private int[] VerticalChecker() {
-        getMatrix();
-        for (int i = 0; i < 9; i++) {
-            List<Integer> checker = {1, 2, 3, 4, 5, 6, 7, 8, 9};
-            for (int j = 0; j < 9; j++){
-                if (getMatrix()[0][i] == checker[j]) {
-                    //из чекера удаляем повторяющиеся элементы!
+    private ArrayList<Integer> CreateCheckList() {
+        ArrayList<Integer> checkList = new ArrayList<Integer>();
+        for (int x = 1; x <= 9; x++) {
+            checkList.add(x);
+        }
+        return checkList;
+    }
+
+    private ArrayList<ArrayList<Integer>> VerticalVariants() {
+
+        ArrayList<ArrayList<Integer>> verticalVariants = new ArrayList<ArrayList<Integer>>();
+
+        for(int k = 0; k < 9; k++) {
+            ArrayList<Integer> checklist = CreateCheckList();
+            ArrayList<Integer> changedCheckList = CreateCheckList();
+            for (int i = 0; i < 9; i++) {
+                for (int j = 0; j < 9; j++){
+                    if (getMatrix()[k][i] == checklist.get(j)) {
+                        changedCheckList.remove(checklist.get(j));
+                    }
                 }
             }
-
+            verticalVariants.add(changedCheckList);
         }
+        System.out.println(verticalVariants);
+        return verticalVariants;
     }
 
-    private int HorizontalChecker() {
-        getMatrix();
-    }
+    private ArrayList<ArrayList<Integer>> HorizontalVariants() {
 
-    private int SquareChecker() {
-        getMatrix();
+        ArrayList<ArrayList<Integer>> horizontalVariants = new ArrayList<ArrayList<Integer>>();
+
+        for(int k = 0; k < 9; k++) {
+            ArrayList<Integer> checklist = CreateCheckList();
+            ArrayList<Integer> changedCheckList = CreateCheckList();
+            for (int i = 0; i < 9; i++) {
+                for (int j = 0; j < 9; j++){
+                    if (getMatrix()[i][k] == checklist.get(j)) {
+                        changedCheckList.remove(checklist.get(j));
+                    }
+                }
+            }
+            horizontalVariants.add(changedCheckList);
+        }
+        System.out.println(horizontalVariants);
+        return horizontalVariants;
     }
+//
+//    private int SquareChecker() {
+//        getMatrix();
+//    }
 }
