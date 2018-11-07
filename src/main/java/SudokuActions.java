@@ -9,20 +9,14 @@ public class SudokuActions {
         this.driver = driver;
     }
 
-    private String[][] IDBase () {
-        String[][] cellNumber = new String[9][9];
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9; j++) {
-                String cellID = "td" + String.valueOf(i) + String.valueOf(j);
-                cellNumber[i][j] = cellID;
-            }
-        }
+    private String IDBase (int i, int j) {
+        String cellNumber = "td" + String.valueOf(i) + String.valueOf(j);
         return cellNumber;
     }
 
 
-    public void ChoseNumber (String cell, String reqNumber){
-        By reqCell = By.id(cell);
+    public void ChoseNumber (int i, int j, String reqNumber){
+        By reqCell = By.id(IDBase(i, j));
         By reqNum = By.xpath("//*[@id='numz']/a[" + reqNumber +"]");
         driver.findElement(reqCell).click();
         driver.findElement(reqNum).click();

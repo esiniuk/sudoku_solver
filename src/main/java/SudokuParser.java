@@ -18,7 +18,7 @@ class SudokuParser {
                 String attribute = element.getAttribute("innerHTML");
                 int x = Integer.parseInt(attribute.substring(14,15));
                 sudokumatrix[i][j] = x;
-            }
+             }
         }
         return sudokumatrix;
     }

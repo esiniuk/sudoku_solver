@@ -1,5 +1,7 @@
+import org.openqa.selenium.Alert;
 import org.openqa.selenium.WebDriver;
-import java.util.ArrayList;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 
 public class SudokuSolver {
@@ -7,44 +9,50 @@ public class SudokuSolver {
     private WebDriver driver;
     private int[][] sudokuMatrix;
     private SudokuParser sudokuParser;
-    private ArrayList<ArrayList<Integer>> boxVariants;
+    private SudokuActions sudokuActions;
     private SudokuValidators sudokuValidators;
 
     public SudokuSolver (WebDriver driver) {
         this.driver = driver;
         this.sudokuParser = new SudokuParser(driver);
-        this.sudokuValidators = new SudokuValidators(driver);
+        this.sudokuActions = new SudokuActions(driver);
         this.sudokuMatrix = getMatrix();
-        this.boxVariants = getBoxes();
     }
 
     private int[][] getMatrix() {
         sudokuMatrix = sudokuParser.ParseSudoku(driver);
+        this.sudokuValidators = new SudokuValidators(driver, sudokuMatrix);
         return sudokuMatrix;
     }
 
-    private ArrayList<ArrayList<Integer>> getBoxes() {
-        boxVariants = sudokuValidators.BoxVariants();
-        return boxVariants;
-    }
-
     void SolveSudoku() {
-        System.out.println(boxVariants);
-        for (int i = 0; i < 9; i++) {
-            for (int j = 0; j < 9; j++){
-                if (sudokuMatrix[i][j] == 0) {
-
+        try {
+            boolean continueFlag = true;
+            while (continueFlag) {
+                continueFlag = false;
+                getMatrix();
+                for (int i = 0; i < 9; i++) {
+                    for (int j = 0; j < 9; j++){
+                        if (sudokuMatrix[i][j] == 0 && sudokuValidators.Answer(i, j) != null) {
+                            sudokuActions.ChoseNumber(i, j, sudokuValidators.Answer(i, j));
+                            continueFlag = true;
+                        }
+                    }
                 }
             }
-
+        } catch (Exception e) {
+            checkAlert();
         }
-
     }
 
-
-
-//
-//    private int SquareChecker() {
-//        getMatrix();
-//    }
+    private void checkAlert() {
+        try {
+            WebDriverWait wait = new WebDriverWait(driver, 2);
+            wait.until(ExpectedConditions.alertIsPresent());
+            Alert alert = driver.switchTo().alert();
+            alert.accept();
+        } catch (Exception e) {
+            //exception handling
+        }
+    }
 }
