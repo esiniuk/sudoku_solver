@@ -8,22 +8,4 @@
     <artifactId>sudoku_solver</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-    <dependencies>
-
-        <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-java</artifactId>
-            <version>3.141.0</version>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-chrome-driver -->
-        <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-chrome-driver</artifactId>
-            <version>3.141.0</version>
-        </dependency>
-
-    </dependencies>
-
-
 </project>
