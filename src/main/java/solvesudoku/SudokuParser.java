@@ -8,7 +8,7 @@ import static utils.RunProperties.getSudokuSize;
 
 public class SudokuParser {
 
-    int[][] ParseSudoku(){
+    public int[][] ParseSudoku(){
 
         int sudokuSize = getSudokuSize();
         int [][] sudokumatrix = new int[sudokuSize][sudokuSize];
