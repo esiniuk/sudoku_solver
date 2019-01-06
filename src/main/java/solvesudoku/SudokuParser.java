@@ -6,7 +6,7 @@ import org.openqa.selenium.WebElement;
 import static drivers.DriverFactory.driver;
 import static utils.RunProperties.getSudokuSize;
 
-class SudokuParser {
+public class SudokuParser {
 
     int[][] ParseSudoku(){
 
