@@ -1,18 +1,16 @@
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
+import solvesudoku.SudokuSolver;
+import ui.StartPage;
 
 public class RunSudokuSolver {
 
+    private static StartPage startPage = new StartPage();
+    private static SudokuSolver sudokuSolver = new SudokuSolver();
+
     public static void main (String[] agrs){
 
-//        System.setProperty("webdriver.chrome.driver" , "C:\\Users\\evgen\\Downloads\\chromedriver.exe");
-        System.setProperty("webdriver.chrome.driver", "/Users/evgenii_siniuk/Downloads/chromedriver");
-        WebDriver driver = new ChromeDriver();
-
-        driver.get("http://sudoku.org.ua/rus/");
-
-        SudokuSolver sudokuSolver = new SudokuSolver(driver);
+        startPage.open();
         sudokuSolver.SolveSudoku();
+        startPage.close();
 
     }
 }
